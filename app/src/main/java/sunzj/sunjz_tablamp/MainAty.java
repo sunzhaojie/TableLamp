@@ -66,20 +66,9 @@ public class MainAty extends AppCompatActivity implements View.OnClickListener, 
         }
     }
 
-    /**
-     * 初始化
-     */
-    private void init() {
-
-        mTextView = (TextView) findViewById(R.id.id_tv);
-        mButtonOprn = (Button) findViewById(R.id.id_btn_open);
-        mButtonClose = (Button) findViewById(R.id.id_btn_close);
-        mListViewDevices = (ListView) findViewById(R.id.id_lv_devices);
-
-        data = new ArrayList<>();
-        simpleAdapter = new SimpleAdapter(this, data, R.layout.layout_lv_divices_item, new String[]{"lv_left_icon", "lv_address", "lv_right_icon"}, new int[]{R.id.id_iv_left, R.id.id_tv_address, R.id.id_iv_right});
-        mListViewDevices.setAdapter(simpleAdapter);
-        mListViewDevices.setOnItemClickListener(this);
+    @Override
+    protected void onResume() {
+        super.onResume();
 
 
         /** 获取以前匹配过的蓝牙设备*/
@@ -90,6 +79,7 @@ public class MainAty extends AppCompatActivity implements View.OnClickListener, 
             Toast.makeText(MainAty.this, "该设备不支持蓝牙功能 ", Toast.LENGTH_SHORT).show();
 
         if (devices != null && devices.size() > 0) {
+            data.clear();
             for (BluetoothDevice device : devices) {
                 HashMap<String, Object> map = new HashMap<>();
                 map.put("lv_left_icon", R.drawable.lv_left_icon);
@@ -107,6 +97,23 @@ public class MainAty extends AppCompatActivity implements View.OnClickListener, 
         }
 
         simpleAdapter.notifyDataSetChanged();
+
+    }
+
+    /**
+     * 初始化
+     */
+    private void init() {
+
+        mTextView = (TextView) findViewById(R.id.id_tv);
+        mButtonOprn = (Button) findViewById(R.id.id_btn_open);
+        mButtonClose = (Button) findViewById(R.id.id_btn_close);
+        mListViewDevices = (ListView) findViewById(R.id.id_lv_devices);
+
+        data = new ArrayList<>();
+        simpleAdapter = new SimpleAdapter(this, data, R.layout.layout_lv_divices_item, new String[]{"lv_left_icon", "lv_address", "lv_right_icon"}, new int[]{R.id.id_iv_left, R.id.id_tv_address, R.id.id_iv_right});
+        mListViewDevices.setAdapter(simpleAdapter);
+        mListViewDevices.setOnItemClickListener(this);
 
 
         mButtonOprn.setOnClickListener(this);
